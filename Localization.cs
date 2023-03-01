@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Globalization;
-using Foundation;
-using Customers.iOS;
 using Xamarin.Forms;
+using Customers.Droid;
+using Customers;
 
 [assembly:Dependency(typeof(Localization))]
 
-namespace Customers.iOS
+namespace Customers.Droid
 {
     public class Localization : ILocalization
     {
-        public CultureInfo GetCurrentCultureInfo()
+        public CultureInfo GetCurrentCultureInfo ()
         {
-            var netLanguage = "en";
-            if (NSLocale.PreferredLanguages.Length > 0)
-            {
-                var pref = NSLocale.PreferredLanguages[0];
-                netLanguage = pref.Replace("_", "-"); // turns es_ES into es-ES
-
-                if (pref == "pt")
-                    pref = "pt-BR"; // get the correct Brazilian language strings from the PCL RESX
-                //(note the local iOS folder is still "pt")
-            }
+            var androidLocale = Java.Util.Locale.Default;
+            var netLanguage = androidLocale.ToString().Replace ("_", "-"); // turns pt_BR into pt-BR
             return new CultureInfo(netLanguage);
         }
 
